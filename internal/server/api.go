@@ -1,9 +1,12 @@
 package server
 
 import (
+	"bytes"
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"io"
+	"math"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -22,9 +25,11 @@ import (
 type Server struct {
 	Config    config.AppConfig
 	SSE       *SSEHub
+	ledger    *auditor.DuplicateLedger
 	mu        sync.RWMutex
 	dossiers  map[string]*config.Dossier
 	summaries map[string]*config.AuditSummary
+	history   []*config.AuditSummary
 }
 
 // NewServer creates a new API and Cockpit server instance.
@@ -32,8 +37,10 @@ func NewServer(cfg config.AppConfig) *Server {
 	return &Server{
 		Config:    cfg,
 		SSE:       NewSSEHub(),
+		ledger:    auditor.NewDuplicateLedger(),
 		dossiers:  make(map[string]*config.Dossier),
 		summaries: make(map[string]*config.AuditSummary),
+		history:   make([]*config.AuditSummary, 0),
 	}
 }
 
@@ -53,11 +60,16 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("/api/dossiers", s.handleListDossiers)
 	mux.HandleFunc("/api/dossiers/", s.handleGetDossier)
 	mux.HandleFunc("/api/reconcile/", s.handleReconcile)
+	mux.HandleFunc("/api/history", s.handleHistory)
+	mux.HandleFunc("/api/metrics", s.handleMetrics)
+	mux.HandleFunc("/api/vendors/scorecard", s.handleVendorScorecard)
+	mux.HandleFunc("/api/batch", s.handleBatch)
 	mux.HandleFunc("/api/export/sap/", s.handleExportSAP)
 	mux.HandleFunc("/api/export/netsuite/", s.handleExportNetSuite)
 	mux.HandleFunc("/api/export/quickbooks/", s.handleExportQuickBooks)
 	mux.HandleFunc("/api/export/dispute/", s.handleExportDispute)
 	mux.HandleFunc("/api/export/evidence/", s.handleExportEvidencePDF)
+	mux.HandleFunc("/api/export/csv/", s.handleExportCSV)
 	mux.HandleFunc("/api/upload", s.handleUpload)
 	mux.HandleFunc("/api/stream", s.SSE.HandleSSE)
 
@@ -117,10 +129,11 @@ func (s *Server) handleReconcile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	summary := auditor.ReconcileDossier(dossier, s.Config)
+	summary := auditor.ReconcileDossierWithLedger(dossier, s.Config, s.ledger)
 
 	s.mu.Lock()
 	s.summaries[id] = summary
+	s.history = append(s.history, summary)
 	s.mu.Unlock()
 
 	// Broadcast SSE event
@@ -332,11 +345,263 @@ func (s *Server) getOrCreateSummary(id string) *config.AuditSummary {
 		return nil
 	}
 
-	sum := auditor.ReconcileDossier(dossier, s.Config)
+	sum := auditor.ReconcileDossierWithLedger(dossier, s.Config, s.ledger)
 	s.mu.Lock()
 	s.summaries[id] = sum
+	s.history = append(s.history, sum)
 	s.mu.Unlock()
 	return sum
+}
+
+func (s *Server) handleHistory(w http.ResponseWriter, r *http.Request) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	res := make([]*config.AuditSummary, len(s.history))
+	for i, item := range s.history {
+		res[len(s.history)-1-i] = item
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+}
+
+// MetricsSummary contains aggregated AP audit performance figures.
+type MetricsSummary struct {
+	TotalDossiers            int            `json:"total_dossiers"`
+	TotalAudited             int            `json:"total_audited"`
+	ApprovedCount            int            `json:"approved_count"`
+	FlaggedCount             int            `json:"flagged_count"`
+	TotalInvoicedSpend       float64        `json:"total_invoiced_spend"`
+	TotalAuthorizedSpend     float64        `json:"total_authorized_spend"`
+	TotalPreventedOvercharge float64        `json:"total_prevented_overcharge"`
+	EarlyDiscountPotential   float64        `json:"early_discount_potential"`
+	DiscrepancyBreakdown     map[string]int `json:"discrepancy_breakdown"`
+}
+
+func (s *Server) handleMetrics(w http.ResponseWriter, r *http.Request) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	metrics := MetricsSummary{
+		TotalDossiers:        len(s.dossiers),
+		TotalAudited:         len(s.summaries),
+		DiscrepancyBreakdown: make(map[string]int),
+	}
+
+	for _, sum := range s.summaries {
+		metrics.TotalInvoicedSpend += sum.TotalInvoiced
+		metrics.TotalAuthorizedSpend += sum.TotalAuthorized
+		metrics.TotalPreventedOvercharge += sum.PreventedOvercharge
+		if sum.MatchStatus == "APPROVED" {
+			metrics.ApprovedCount++
+		} else {
+			metrics.FlaggedCount++
+		}
+		if sum.EarlyDiscount != nil && sum.EarlyDiscount.IsEligible {
+			metrics.EarlyDiscountPotential += sum.EarlyDiscount.DiscountAmount
+		}
+		for _, d := range sum.Discrepancies {
+			metrics.DiscrepancyBreakdown[string(d.Type)]++
+		}
+	}
+
+	metrics.TotalInvoicedSpend = math.Round(metrics.TotalInvoicedSpend*100) / 100
+	metrics.TotalAuthorizedSpend = math.Round(metrics.TotalAuthorizedSpend*100) / 100
+	metrics.TotalPreventedOvercharge = math.Round(metrics.TotalPreventedOvercharge*100) / 100
+	metrics.EarlyDiscountPotential = math.Round(metrics.EarlyDiscountPotential*100) / 100
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(metrics)
+}
+
+// VendorScorecard summarizes historical billing compliance per supplier.
+type VendorScorecard struct {
+	VendorName           string  `json:"vendor_name"`
+	TotalAuditedInvoices int     `json:"total_audited_invoices"`
+	CleanInvoices        int     `json:"clean_invoices"`
+	FlaggedInvoices      int     `json:"flagged_invoices"`
+	TotalInvoiced        float64 `json:"total_invoiced"`
+	TotalAuthorized      float64 `json:"total_authorized"`
+	PreventedOvercharge  float64 `json:"prevented_overcharge"`
+	AccuracyRate         float64 `json:"accuracy_rate"`
+	RiskTier             string  `json:"risk_tier"`
+}
+
+func (s *Server) handleVendorScorecard(w http.ResponseWriter, r *http.Request) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	vendorMap := make(map[string]*VendorScorecard)
+
+	for _, sum := range s.summaries {
+		vName := sum.VendorName
+		if vName == "" {
+			vName = "Unknown Vendor"
+		}
+		sc, exists := vendorMap[vName]
+		if !exists {
+			sc = &VendorScorecard{VendorName: vName}
+			vendorMap[vName] = sc
+		}
+
+		sc.TotalAuditedInvoices++
+		sc.TotalInvoiced += sum.TotalInvoiced
+		sc.TotalAuthorized += sum.TotalAuthorized
+		sc.PreventedOvercharge += sum.PreventedOvercharge
+		if sum.MatchStatus == "APPROVED" {
+			sc.CleanInvoices++
+		} else {
+			sc.FlaggedInvoices++
+		}
+	}
+
+	var scorecards []VendorScorecard
+	for _, sc := range vendorMap {
+		if sc.TotalAuditedInvoices > 0 {
+			sc.AccuracyRate = math.Round((float64(sc.CleanInvoices)/float64(sc.TotalAuditedInvoices))*1000) / 10.0
+		}
+		if sc.AccuracyRate >= 95.0 {
+			sc.RiskTier = "LOW"
+		} else if sc.AccuracyRate >= 75.0 {
+			sc.RiskTier = "MEDIUM"
+		} else {
+			sc.RiskTier = "HIGH"
+		}
+		sc.TotalInvoiced = math.Round(sc.TotalInvoiced*100) / 100
+		sc.TotalAuthorized = math.Round(sc.TotalAuthorized*100) / 100
+		sc.PreventedOvercharge = math.Round(sc.PreventedOvercharge*100) / 100
+		scorecards = append(scorecards, *sc)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(scorecards)
+}
+
+// BatchRequest specifies target dossiers to reconcile in one transaction.
+type BatchRequest struct {
+	DossierIDs []string `json:"dossier_ids"`
+}
+
+// BatchResponse returns consolidated multi-dossier reconciliation results.
+type BatchResponse struct {
+	TotalProcessed      int                    `json:"total_processed"`
+	ApprovedCount       int                    `json:"approved_count"`
+	FlaggedCount        int                    `json:"flagged_count"`
+	TotalInvoiced       float64                `json:"total_invoiced"`
+	TotalAuthorized     float64                `json:"total_authorized"`
+	PreventedOvercharge float64                `json:"prevented_overcharge"`
+	Summaries           []*config.AuditSummary `json:"summaries"`
+}
+
+func (s *Server) handleBatch(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req BatchRequest
+	if r.Body != nil {
+		json.NewDecoder(r.Body).Decode(&req)
+	}
+
+	s.mu.RLock()
+	var targets []*config.Dossier
+	if len(req.DossierIDs) > 0 {
+		for _, id := range req.DossierIDs {
+			if d, ok := s.dossiers[id]; ok {
+				targets = append(targets, d)
+			}
+		}
+	} else {
+		for _, d := range s.dossiers {
+			targets = append(targets, d)
+		}
+	}
+	s.mu.RUnlock()
+
+	var summaries []*config.AuditSummary
+	var totalInvoiced, totalAuth, prevented float64
+	var approved, flagged int
+
+	for _, d := range targets {
+		sum := auditor.ReconcileDossierWithLedger(d, s.Config, s.ledger)
+		summaries = append(summaries, sum)
+		totalInvoiced += sum.TotalInvoiced
+		totalAuth += sum.TotalAuthorized
+		prevented += sum.PreventedOvercharge
+		if sum.MatchStatus == "APPROVED" {
+			approved++
+		} else {
+			flagged++
+		}
+
+		s.mu.Lock()
+		s.summaries[d.ID] = sum
+		s.history = append(s.history, sum)
+		s.mu.Unlock()
+	}
+
+	resp := BatchResponse{
+		TotalProcessed:      len(summaries),
+		ApprovedCount:       approved,
+		FlaggedCount:        flagged,
+		TotalInvoiced:       math.Round(totalInvoiced*100) / 100,
+		TotalAuthorized:     math.Round(totalAuth*100) / 100,
+		PreventedOvercharge: math.Round(prevented*100) / 100,
+		Summaries:           summaries,
+	}
+
+	s.SSE.Broadcast("BATCH_COMPLETE", resp)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
+func (s *Server) handleExportCSV(w http.ResponseWriter, r *http.Request) {
+	id := strings.TrimPrefix(r.URL.Path, "/api/export/csv/")
+	summary := s.getOrCreateSummary(id)
+	if summary == nil {
+		http.Error(w, "dossier not found", http.StatusNotFound)
+		return
+	}
+
+	var buf bytes.Buffer
+	writer := csv.NewWriter(&buf)
+	writer.Write([]string{
+		"DossierID", "Vendor", "InvoiceNumber", "PONumber", "SKU", "Description",
+		"InvoicedQty", "ReceivedQty", "OrderedQty", "InvoicedPrice", "POPrice",
+		"PriceVariance", "DiscrepancyStatus", "MatchConfidence", "MatchReason",
+	})
+
+	for _, p := range summary.MatchedPairs {
+		status := "MATCH"
+		if p.HasDiscrepancy {
+			status = "DISCREPANCY"
+		}
+		writer.Write([]string{
+			summary.DossierID,
+			summary.VendorName,
+			summary.InvoiceNumber,
+			summary.PONumber,
+			p.ItemSKU,
+			p.Description,
+			fmt.Sprintf("%.2f", p.InvoicedQty),
+			fmt.Sprintf("%.2f", p.ReceivedQty),
+			fmt.Sprintf("%.2f", p.OrderedQty),
+			fmt.Sprintf("%.2f", p.InvoicedPrice),
+			fmt.Sprintf("%.2f", p.POPrice),
+			fmt.Sprintf("%.2f", p.PriceVariance),
+			status,
+			fmt.Sprintf("%.2f", p.Confidence),
+			p.MatchReason,
+		})
+	}
+	writer.Flush()
+
+	w.Header().Set("Content-Type", "text/csv")
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"diff_%s.csv\"", id))
+	w.Write(buf.Bytes())
 }
 
 func withCORS(next http.Handler) http.Handler {

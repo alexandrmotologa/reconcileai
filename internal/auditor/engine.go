@@ -11,9 +11,23 @@ import (
 	"github.com/alexandrmotologa/reconcileai/internal/matching"
 )
 
-// ReconcileDossier executes full tripartite 3-way matching and discrepancy auditing.
+// ReconcileDossier executes full tripartite 3-way matching and discrepancy auditing without ledger tracking.
 func ReconcileDossier(dossier *config.Dossier, cfg config.AppConfig) *config.AuditSummary {
+	return ReconcileDossierWithLedger(dossier, cfg, nil)
+}
+
+// ReconcileDossierWithLedger executes 3-way matching, discrepancy auditing, and duplicate detection.
+func ReconcileDossierWithLedger(dossier *config.Dossier, cfg config.AppConfig, ledger *DuplicateLedger) *config.AuditSummary {
 	startTime := time.Now()
+
+	var discrepancies []config.Discrepancy
+
+	// 0. Duplicate invoice detection
+	if ledger != nil {
+		if dupDisc := ledger.CheckDuplicate(dossier); dupDisc != nil {
+			discrepancies = append(discrepancies, *dupDisc)
+		}
+	}
 
 	// 1. Semantic alignment and bipartite matching
 	pairs := matching.MatchDossierLines(dossier, cfg.Matching.MinDescriptionSimilarity)
@@ -24,8 +38,6 @@ func ReconcileDossier(dossier *config.Dossier, cfg config.AppConfig) *config.Aud
 		l := &dossier.Invoice.Lines[i]
 		invLineMap[l.ID] = l
 	}
-
-	var discrepancies []config.Discrepancy
 
 	// 2. Audit line item pairs
 	var authorizedLineSubtotal float64
@@ -115,7 +127,14 @@ func ReconcileDossier(dossier *config.Dossier, cfg config.AppConfig) *config.Aud
 		preventedOvercharge = 0.0
 	}
 
-	// 6. Formulate reconciliation verdict
+	// 6. Early payment discount analysis
+	paymentTerms := dossier.PurchaseOrder.Header.PaymentTerms
+	if paymentTerms == "" {
+		paymentTerms = dossier.Invoice.Header.PaymentTerms
+	}
+	earlyDisc := CalculateEarlyDiscount(paymentTerms, dossier.Invoice.Header.IssueDate, totalAuthorized)
+
+	// 7. Formulate reconciliation verdict
 	matchStatus := "APPROVED"
 	for _, d := range discrepancies {
 		if d.Severity == config.SeverityCritical {
@@ -127,22 +146,28 @@ func ReconcileDossier(dossier *config.Dossier, cfg config.AppConfig) *config.Aud
 	elapsed := time.Since(startTime).Milliseconds()
 
 	summary := &config.AuditSummary{
-		DossierID:          dossier.ID,
-		VendorName:         dossier.Invoice.Header.VendorName,
-		InvoiceNumber:      dossier.Invoice.Header.DocumentID,
-		PONumber:           dossier.PurchaseOrder.Header.DocumentID,
-		MatchStatus:        matchStatus,
-		TotalInvoiced:      totalInvoiced,
-		TotalAuthorized:    totalAuthorized,
+		DossierID:           dossier.ID,
+		VendorName:          dossier.Invoice.Header.VendorName,
+		InvoiceNumber:       dossier.Invoice.Header.DocumentID,
+		PONumber:            dossier.PurchaseOrder.Header.DocumentID,
+		MatchStatus:         matchStatus,
+		TotalInvoiced:       totalInvoiced,
+		TotalAuthorized:     totalAuthorized,
 		PreventedOvercharge: preventedOvercharge,
-		Currency:           dossier.Invoice.Header.Currency,
-		Discrepancies:      discrepancies,
-		MatchedPairs:       pairs,
-		AuditedAt:          time.Now().UTC().Format(time.RFC3339),
-		ExecutionTimeMs:    elapsed,
+		Currency:            dossier.Invoice.Header.Currency,
+		EarlyDiscount:       earlyDisc,
+		Discrepancies:       discrepancies,
+		MatchedPairs:        pairs,
+		AuditedAt:           time.Now().UTC().Format(time.RFC3339),
+		ExecutionTimeMs:     elapsed,
 	}
 
 	summary.AuditHash = computeAuditHash(summary)
+
+	if ledger != nil {
+		ledger.Record(dossier, summary.AuditHash)
+	}
+
 	return summary
 }
 

@@ -7,6 +7,7 @@ import { DocumentViewer } from './components/DocumentViewer';
 import { DiscrepancyList } from './components/DiscrepancyList';
 import { ErpExportDrawer } from './components/ErpExportDrawer';
 import { UploadModal } from './components/UploadModal';
+import { VendorScorecardModal } from './components/VendorScorecardModal';
 
 export const App: React.FC = () => {
   const [dossiers, setDossiers] = useState<Dossier[]>([]);
@@ -14,7 +15,9 @@ export const App: React.FC = () => {
   const [auditSummary, setAuditSummary] = useState<AuditSummary | null>(null);
   const [selectedSKU, setSelectedSKU] = useState<string | null>(null);
   const [isAuditing, setIsAuditing] = useState<boolean>(false);
+  const [isBatching, setIsBatching] = useState<boolean>(false);
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
+  const [isScorecardOpen, setIsScorecardOpen] = useState<boolean>(false);
   const [sseConnected, setSseConnected] = useState<boolean>(false);
 
   // 1. Initial Dossier Fetch
@@ -76,6 +79,24 @@ export const App: React.FC = () => {
     }
   };
 
+  const handleRunBatch = async () => {
+    setIsBatching(true);
+    try {
+      const res = await fetch('/api/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      if (res.ok && selectedDossier) {
+        await runAudit(selectedDossier.id);
+      }
+    } catch (err) {
+      console.error('Batch audit error:', err);
+    } finally {
+      setIsBatching(false);
+    }
+  };
+
   const handleSelectDossier = (d: Dossier) => {
     setSelectedDossier(d);
     setSelectedSKU(null);
@@ -89,9 +110,12 @@ export const App: React.FC = () => {
         selectedDossier={selectedDossier}
         onSelectDossier={handleSelectDossier}
         onRunAudit={() => selectedDossier && runAudit(selectedDossier.id)}
+        onRunBatch={handleRunBatch}
         onOpenUpload={() => setIsUploadOpen(true)}
+        onOpenScorecard={() => setIsScorecardOpen(true)}
         auditSummary={auditSummary}
         isAuditing={isAuditing}
+        isBatching={isBatching}
         sseConnected={sseConnected}
       />
 
@@ -108,6 +132,7 @@ export const App: React.FC = () => {
                 pairs={auditSummary.matched_pairs}
                 currency={auditSummary.currency}
                 selectedSKU={selectedSKU}
+                dossierId={auditSummary.dossier_id}
                 onSelectLine={(sku) => setSelectedSKU(sku === selectedSKU ? null : sku)}
               />
 
@@ -137,6 +162,11 @@ export const App: React.FC = () => {
         isOpen={isUploadOpen}
         onClose={() => setIsUploadOpen(false)}
         onUploadSuccess={() => fetchDossiers()}
+      />
+
+      <VendorScorecardModal
+        isOpen={isScorecardOpen}
+        onClose={() => setIsScorecardOpen(false)}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AuditSummary } from '../types';
-import { ShieldCheck, ShieldAlert, DollarSign, Clock, Hash, Check } from 'lucide-react';
+import { ShieldCheck, ShieldAlert, DollarSign, Clock, Hash, Check, Percent } from 'lucide-react';
 
 interface SavingsSummaryProps {
   summary: AuditSummary;
@@ -115,6 +115,39 @@ export const SavingsSummary: React.FC<SavingsSummaryProps> = ({ summary }) => {
           </div>
         </div>
       </div>
+
+      {/* Early Payment Discount Incentive */}
+      {summary.early_discount && (
+        <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-amber-500/5 border border-amber-500/20 rounded-lg p-3">
+          <div className="flex items-center gap-2.5">
+            <div className="h-8 w-8 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+              <Percent className="h-4 w-4" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-amber-300">
+                Early Payment Discount Available ({summary.early_discount.terms})
+              </div>
+              <div className="text-[11px] text-slate-400">
+                Pay by <strong className="text-slate-200">{summary.early_discount.discount_deadline}</strong> to capture supplier cash terms.
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 self-end sm:self-center">
+            <div className="text-right">
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 block">Annualized ROI</span>
+              <span className="text-xs font-bold text-amber-400 font-mono">
+                {summary.early_discount.annualized_roi}% APR
+              </span>
+            </div>
+            <div className="text-right pl-3 border-l border-amber-500/20">
+              <span className="text-[10px] uppercase tracking-wider text-slate-400 block">Discount Savings</span>
+              <span className="text-sm font-bold text-emerald-400 font-mono">
+                {summary.currency} {summary.early_discount.discount_amount.toFixed(2)}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -78,6 +78,7 @@ const (
 	DiscrepancyUnmatchedItem     DiscrepancyType = "UNMATCHED_INVOICE_ITEM"
 	DiscrepancyUOMMismatch       DiscrepancyType = "UOM_CONVERSION_ERROR"
 	DiscrepancyFXVariance        DiscrepancyType = "CURRENCY_FX_VARIANCE"
+	DiscrepancyDuplicateInvoice  DiscrepancyType = "DUPLICATE_INVOICE"
 )
 
 // DiscrepancySeverity denotes risk level.
@@ -124,20 +125,33 @@ type MatchedLinePair struct {
 	HasDiscrepancy bool     `json:"has_discrepancy"`
 }
 
+// EarlyDiscount specifies early payment discount terms, captured savings, and annualized ROI.
+type EarlyDiscount struct {
+	Terms            string  `json:"terms"`
+	DiscountPercent  float64 `json:"discount_percent"`
+	DiscountDays     int     `json:"discount_days"`
+	NetDays          int     `json:"net_days"`
+	DiscountAmount   float64 `json:"discount_amount"`
+	DiscountDeadline string  `json:"discount_deadline"`
+	AnnualizedROI    float64 `json:"annualized_roi"`
+	IsEligible       bool    `json:"is_eligible"`
+}
+
 // AuditSummary contains the final reconciliation verdict.
 type AuditSummary struct {
-	DossierID          string            `json:"dossier_id"`
-	VendorName         string            `json:"vendor_name"`
-	InvoiceNumber      string            `json:"invoice_number"`
-	PONumber           string            `json:"po_number"`
-	MatchStatus        string            `json:"match_status"` // APPROVED, FLAGGED_DISCREPANCY, REJECTED
-	TotalInvoiced      float64           `json:"total_invoiced"`
-	TotalAuthorized    float64           `json:"total_authorized"`
-	PreventedOvercharge float64          `json:"prevented_overcharge"`
-	Currency           string            `json:"currency"`
-	Discrepancies      []Discrepancy     `json:"discrepancies"`
-	MatchedPairs       []MatchedLinePair `json:"matched_pairs"`
-	AuditedAt          string            `json:"audited_at"`
-	ExecutionTimeMs    int64             `json:"execution_time_ms"`
-	AuditHash          string            `json:"audit_hash"`
+	DossierID           string            `json:"dossier_id"`
+	VendorName          string            `json:"vendor_name"`
+	InvoiceNumber       string            `json:"invoice_number"`
+	PONumber            string            `json:"po_number"`
+	MatchStatus         string            `json:"match_status"` // APPROVED, FLAGGED_DISCREPANCY, REJECTED
+	TotalInvoiced       float64           `json:"total_invoiced"`
+	TotalAuthorized     float64           `json:"total_authorized"`
+	PreventedOvercharge float64           `json:"prevented_overcharge"`
+	Currency            string            `json:"currency"`
+	EarlyDiscount       *EarlyDiscount    `json:"early_discount,omitempty"`
+	Discrepancies       []Discrepancy     `json:"discrepancies"`
+	MatchedPairs        []MatchedLinePair `json:"matched_pairs"`
+	AuditedAt           string            `json:"audited_at"`
+	ExecutionTimeMs     int64             `json:"execution_time_ms"`
+	AuditHash           string            `json:"audit_hash"`
 }

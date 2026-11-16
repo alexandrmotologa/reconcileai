@@ -57,7 +57,53 @@ Flags:
 - `--dir`: path to folder holding PO, GRN, and Invoice documents.
 - `--format`: output format, choices: `table` (default), `json`, or `memo`.
 
-### 3. `export`
+### 3. `batch`
+Runs reconciliation across multiple dossier directories, aggregating spend, prevented losses, and discrepancy counts.
+
+```bash
+# Display batch reconciliation summary table
+./bin/reconcileai.exe batch --dir ./examples/dossiers
+
+# Output consolidated CSV of all audited dossiers
+./bin/reconcileai.exe batch --dir ./examples/dossiers --format csv
+
+# Save individual audit reports and consolidated batch summary to folder
+./bin/reconcileai.exe batch --dir ./examples/dossiers --out ./reports
+```
+
+Flags:
+- `--dir`: base folder containing dossier subdirectories (default: `./examples/dossiers`).
+- `--format`: output format, choices: `table` (default), `json`, or `csv`.
+- `--out`: destination folder to write individual audit JSON files and `batch_summary.json`.
+
+### 4. `watch`
+Monitors an inbox folder for newly added dossier directories and processes them as they arrive.
+
+```bash
+# Watch inbox directory with a 3-second polling interval
+./bin/reconcileai.exe watch --dir ./inbox --poll 3
+```
+
+Flags:
+- `--dir`: directory to monitor (default: `./inbox`).
+- `--poll`: polling interval in seconds (default: `3`).
+
+### 5. `scorecard`
+Aggregates vendor billing compliance metrics across dossiers and computes risk tiers.
+
+```bash
+# Print vendor compliance scorecard table
+./bin/reconcileai.exe scorecard --dir ./examples/dossiers
+
+# Output scorecard data in JSON
+./bin/reconcileai.exe scorecard --dir ./examples/dossiers --format json
+```
+
+Flags:
+- `--dir`: folder holding dossiers to analyze (default: `./examples/dossiers`).
+- `--format`: output format, choices: `table` (default) or `json`.
+
+### 6. `export`
 Generates ERP settlement payloads or dispute artifacts from an audited dossier.
 
 ```bash
@@ -82,7 +128,7 @@ Flags:
 - `--target`: export format, choices: `sap`, `netsuite`, `quickbooks`, `dispute`, `pdf`.
 - `--out`: destination path for the exported file (defaults to stdout for text formats).
 
-### 4. `generate-dossier`
+### 7. `generate-dossier`
 Synthesizes reference tripartite PDF dossiers with realistic accounting anomalies.
 
 ```bash
@@ -96,7 +142,7 @@ Creates five reference scenarios:
 4. `dossier_04_unauthorized_fee`: unexpected freight surcharge on FOB Destination contract.
 5. `dossier_05_uom_split_delivery`: split warehouse intake with dozen-to-each packaging conversion.
 
-### 5. `version`
+### 8. `version`
 Displays current version, compiler details, and runtime heap allocation.
 
 ```bash

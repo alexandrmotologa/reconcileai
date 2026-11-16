@@ -59,9 +59,45 @@ export type DiscrepancyType =
   | 'ARITHMETIC_MISMATCH'
   | 'UNMATCHED_INVOICE_ITEM'
   | 'UOM_CONVERSION_ERROR'
-  | 'CURRENCY_FX_VARIANCE';
+  | 'CURRENCY_FX_VARIANCE'
+  | 'DUPLICATE_INVOICE';
 
 export type DiscrepancySeverity = 'CRITICAL' | 'WARNING' | 'INFO';
+
+export interface EarlyDiscount {
+  terms: string;
+  discount_percent: number;
+  discount_days: number;
+  net_days: number;
+  discount_amount: number;
+  discount_deadline: string;
+  annualized_roi: number;
+  is_eligible: boolean;
+}
+
+export interface VendorScorecard {
+  vendor_name: string;
+  total_audited_invoices: number;
+  clean_invoices: number;
+  flagged_invoices: number;
+  total_invoiced: number;
+  total_authorized: number;
+  prevented_overcharge: number;
+  accuracy_rate: number;
+  risk_tier: 'LOW' | 'MEDIUM' | 'HIGH';
+}
+
+export interface MetricsSummary {
+  total_dossiers: number;
+  total_audited: number;
+  approved_count: number;
+  flagged_count: number;
+  total_invoiced_spend: number;
+  total_authorized_spend: number;
+  total_prevented_overcharge: number;
+  early_discount_potential: number;
+  discrepancy_breakdown: Record<string, number>;
+}
 
 export interface Discrepancy {
   id: string;
@@ -106,6 +142,7 @@ export interface AuditSummary {
   total_authorized: number;
   prevented_overcharge: number;
   currency: string;
+  early_discount?: EarlyDiscount;
   discrepancies: Discrepancy[];
   matched_pairs: MatchedLinePair[];
   audited_at: string;

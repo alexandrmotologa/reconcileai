@@ -1,6 +1,6 @@
 # Binaries and executables
 bin/
-dist/
+/dist/
 *.exe
 *.exe~
 *.dll
@@ -16,7 +16,7 @@ tmp/
 
 # Node & Frontend
 node_modules/
-web/dist/
+# web/dist is tracked to allow self-contained Go binary builds without Node installed
 web/.vite/
 web/build/
 .npm

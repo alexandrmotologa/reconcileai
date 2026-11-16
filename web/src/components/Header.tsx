@@ -1,15 +1,18 @@
 import React from 'react';
 import { Dossier, AuditSummary } from '../types';
-import { FileCheck, Play, Upload, RefreshCw, Radio } from 'lucide-react';
+import { FileCheck, Play, Upload, RefreshCw, Radio, Award, Layers } from 'lucide-react';
 
 interface HeaderProps {
   dossiers: Dossier[];
   selectedDossier: Dossier | null;
   onSelectDossier: (d: Dossier) => void;
   onRunAudit: () => void;
+  onRunBatch?: () => void;
   onOpenUpload: () => void;
+  onOpenScorecard?: () => void;
   auditSummary?: AuditSummary | null;
   isAuditing: boolean;
+  isBatching?: boolean;
   sseConnected: boolean;
 }
 
@@ -18,8 +21,11 @@ export const Header: React.FC<HeaderProps> = ({
   selectedDossier,
   onSelectDossier,
   onRunAudit,
+  onRunBatch,
   onOpenUpload,
+  onOpenScorecard,
   isAuditing,
+  isBatching = false,
   sseConnected,
 }) => {
   return (
@@ -55,9 +61,9 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-3 w-full md:w-auto">
+        <div className="flex items-center gap-2.5 w-full md:w-auto flex-wrap md:flex-nowrap justify-end">
           {/* Dossier Selector */}
-          <div className="relative flex-1 md:w-72">
+          <div className="relative flex-1 md:w-64 min-w-[200px]">
             <select
               value={selectedDossier?.id || ''}
               onChange={(e) => {
@@ -74,6 +80,31 @@ export const Header: React.FC<HeaderProps> = ({
             </select>
           </div>
 
+          {/* Scorecard Button */}
+          {onOpenScorecard && (
+            <button
+              onClick={onOpenScorecard}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
+              title="View Supplier Compliance & Risk Scorecard"
+            >
+              <Award className="h-4 w-4 text-amber-400" />
+              <span>Scorecard</span>
+            </button>
+          )}
+
+          {/* Batch Audit Button */}
+          {onRunBatch && (
+            <button
+              onClick={onRunBatch}
+              disabled={isBatching || isAuditing}
+              className="flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 disabled:opacity-50 transition"
+              title="Audit All Dossiers Concurrently"
+            >
+              <Layers className="h-4 w-4 text-sky-400" />
+              <span>{isBatching ? 'Auditing All...' : 'Batch Audit'}</span>
+            </button>
+          )}
+
           {/* Upload Button */}
           <button
             onClick={onOpenUpload}
@@ -87,8 +118,8 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Reconcile Audit Button */}
           <button
             onClick={onRunAudit}
-            disabled={isAuditing}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white shadow-lg shadow-sky-950 transition"
+            disabled={isAuditing || isBatching}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white shadow-lg shadow-sky-950 transition whitespace-nowrap"
           >
             {isAuditing ? (
               <>

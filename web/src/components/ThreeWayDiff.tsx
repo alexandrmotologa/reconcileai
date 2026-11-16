@@ -1,11 +1,12 @@
 import React from 'react';
 import { MatchedLinePair } from '../types';
-import { CheckCircle2, AlertTriangle, Zap } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Zap, Download } from 'lucide-react';
 
 interface ThreeWayDiffProps {
   pairs: MatchedLinePair[];
   currency: string;
   selectedSKU: string | null;
+  dossierId?: string;
   onSelectLine: (sku: string) => void;
 }
 
@@ -13,6 +14,7 @@ export const ThreeWayDiff: React.FC<ThreeWayDiffProps> = ({
   pairs,
   currency,
   selectedSKU,
+  dossierId,
   onSelectLine,
 }) => {
   return (
@@ -35,6 +37,17 @@ export const ThreeWayDiff: React.FC<ThreeWayDiffProps> = ({
             <AlertTriangle className="h-3.5 w-3.5" />
             <span>Discrepancy</span>
           </div>
+          {dossierId && (
+            <a
+              href={`/api/export/csv/${dossierId}`}
+              download={`diff_${dossierId}.csv`}
+              className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700 transition"
+              title="Download line diff as CSV"
+            >
+              <Download className="h-3.5 w-3.5 text-sky-400" />
+              <span>Export CSV</span>
+            </a>
+          )}
         </div>
       </div>
 

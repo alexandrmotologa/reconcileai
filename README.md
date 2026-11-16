@@ -23,6 +23,10 @@ The system ingests PDF documents and structured JSON dossiers, aligns line items
   - Price variance: flags unit price increases exceeding contract tolerance thresholds.
   - Face arithmetic: checks row multiplications, subtotal summations, and tax totals.
   - Surcharge validation: detects unapproved freight or handling surcharges on FOB Destination orders.
+  - Duplicate invoice detection: maintains a thread-safe ledger checking exact and fuzzy duplicate submissions.
+- **Early payment discount optimization**: Parses terms such as 2/10 Net 30, calculates capture deadlines, monetary savings, and annualized return on investment (APR).
+- **Vendor risk scorecards**: Aggregates historical compliance rates per supplier and assigns risk tiers based on audit accuracy.
+- **Batch processing and inbox watch**: Scans directories for bulk reconciliations and monitors incoming folders for continuous processing.
 - **Visual PDF evidence**: Places red rectangular bounding boxes with numbered discrepancy badges on invoice pages.
 - **Dispute notice generation**: Produces itemized vendor dispute letters in Markdown and plain text citing contract clauses and document coordinates.
 - **ERP settlement export**: Generates SAP S/4HANA IDoc XML (`INVOIC02`), NetSuite Bill import CSV, and QuickBooks Online JSON payment payloads.
@@ -103,6 +107,12 @@ Open `http://127.0.0.1:7272` in your web browser to access the cockpit.
 
 # Vendor dispute memo output
 ./bin/reconcileai.exe audit --dir ./examples/dossiers/dossier_02_qty_overbilling --format memo
+
+# Batch audit across all dossier directories
+./bin/reconcileai.exe batch --dir ./examples/dossiers
+
+# Vendor compliance scorecard
+./bin/reconcileai.exe scorecard --dir ./examples/dossiers
 ```
 
 ### 5. Export settlement payloads
