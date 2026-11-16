@@ -1,0 +1,34 @@
+# Binaries and executables
+bin/
+dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test artifacts and temporary files
+*.test
+*.out
+*.prof
+tmp/
+.temp/
+
+# Node & Frontend
+node_modules/
+web/dist/
+web/.vite/
+web/build/
+.npm
+npm-debug.log*
+
+# Go build cache
+.cache/
+
+# OS and Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
