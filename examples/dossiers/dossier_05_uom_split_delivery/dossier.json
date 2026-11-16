@@ -1,0 +1,162 @@
+{
+  "id": "dossier_05_uom_split_delivery",
+  "title": "ChemPure - Split GRN Delivery with Dozen-to-Each UOM Alignment",
+  "purchase_order": {
+    "header": {
+      "document_id": "PO-2026-9055",
+      "document_type": "PO",
+      "reference_id": "",
+      "vendor_id": "VEND-CHEM",
+      "vendor_name": "ChemPure Analytical Reagents LLC",
+      "vendor_tax_id": "",
+      "issue_date": "2026-09-05",
+      "currency": "USD",
+      "subtotal": 3600,
+      "tax_total": 288,
+      "freight_total": 0,
+      "total_amount": 3888,
+      "payment_terms": "Net 30"
+    },
+    "lines": [
+      {
+        "id": "PO-L01",
+        "line_number": 1,
+        "sku": "REAG-ACET-01",
+        "description": "Analytical HPLC Grade Acetonitrile 4L",
+        "quantity": 120,
+        "uom": "EA",
+        "unit_price": 30,
+        "total_price": 3600,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_05_uom_split_delivery\\PO_2026_9055.pdf"
+  },
+  "goods_receipts": [
+    {
+      "header": {
+        "document_id": "GRN-2026-4451",
+        "document_type": "GRN",
+        "reference_id": "PO-2026-9055",
+        "vendor_id": "VEND-CHEM",
+        "vendor_name": "ChemPure Analytical Reagents LLC",
+        "vendor_tax_id": "",
+        "issue_date": "2026-09-07",
+        "currency": "USD",
+        "subtotal": 0,
+        "tax_total": 0,
+        "freight_total": 0,
+        "total_amount": 0,
+        "payment_terms": ""
+      },
+      "lines": [
+        {
+          "id": "GRN1-L01",
+          "line_number": 1,
+          "sku": "REAG-ACET-01",
+          "description": "Acetonitrile HPLC Grade 4L (Batch 1)",
+          "quantity": 60,
+          "uom": "EA",
+          "unit_price": 0,
+          "total_price": 0,
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "bounding_box": {
+            "page": 1,
+            "x": 40,
+            "y": 142,
+            "width": 515,
+            "height": 20
+          }
+        }
+      ],
+      "raw_pdf_path": "examples\\dossiers\\dossier_05_uom_split_delivery\\GRN_2026_4451.pdf"
+    },
+    {
+      "header": {
+        "document_id": "GRN-2026-4452",
+        "document_type": "GRN",
+        "reference_id": "PO-2026-9055",
+        "vendor_id": "VEND-CHEM",
+        "vendor_name": "ChemPure Analytical Reagents LLC",
+        "vendor_tax_id": "",
+        "issue_date": "2026-09-09",
+        "currency": "USD",
+        "subtotal": 0,
+        "tax_total": 0,
+        "freight_total": 0,
+        "total_amount": 0,
+        "payment_terms": ""
+      },
+      "lines": [
+        {
+          "id": "GRN2-L01",
+          "line_number": 1,
+          "sku": "REAG-ACET-01",
+          "description": "Acetonitrile HPLC Grade 4L (Batch 2)",
+          "quantity": 60,
+          "uom": "EA",
+          "unit_price": 0,
+          "total_price": 0,
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "bounding_box": {
+            "page": 1,
+            "x": 40,
+            "y": 142,
+            "width": 515,
+            "height": 20
+          }
+        }
+      ],
+      "raw_pdf_path": "examples\\dossiers\\dossier_05_uom_split_delivery\\GRN_2026_4452.pdf"
+    }
+  ],
+  "invoice": {
+    "header": {
+      "document_id": "INV-CHEM-6091",
+      "document_type": "INVOICE",
+      "reference_id": "PO-2026-9055",
+      "vendor_id": "VEND-CHEM",
+      "vendor_name": "ChemPure Analytical Reagents LLC",
+      "vendor_tax_id": "",
+      "issue_date": "2026-09-11",
+      "currency": "USD",
+      "subtotal": 3600,
+      "tax_total": 288,
+      "freight_total": 0,
+      "total_amount": 3888,
+      "payment_terms": "Net 30"
+    },
+    "lines": [
+      {
+        "id": "INV-L01",
+        "line_number": 1,
+        "sku": "REAG-ACET-01",
+        "description": "Acetonitrile HPLC Grade 4L Case Pack",
+        "quantity": 10,
+        "uom": "DZ",
+        "unit_price": 360,
+        "total_price": 3600,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_05_uom_split_delivery\\INV_CHEM_6091.pdf"
+  }
+}

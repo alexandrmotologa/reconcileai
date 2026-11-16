@@ -1,0 +1,237 @@
+{
+  "id": "dossier_01_clean_match",
+  "title": "Apex Industrial - Perfect 3-Way Match",
+  "purchase_order": {
+    "header": {
+      "document_id": "PO-2026-9011",
+      "document_type": "PO",
+      "reference_id": "",
+      "vendor_id": "VEND-APEX",
+      "vendor_name": "Apex Industrial Fasteners Corp",
+      "vendor_tax_id": "US-82-9912041",
+      "issue_date": "2026-09-01",
+      "currency": "USD",
+      "subtotal": 4850,
+      "tax_total": 388,
+      "freight_total": 0,
+      "total_amount": 5238,
+      "payment_terms": "2/10 Net 30 FOB Destination"
+    },
+    "lines": [
+      {
+        "id": "PO-L01",
+        "line_number": 1,
+        "sku": "FAST-HEX-01",
+        "description": "Grade 8 Hex Flange Bolt 3/8-16",
+        "quantity": 500,
+        "uom": "EA",
+        "unit_price": 4.2,
+        "total_price": 2100,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      },
+      {
+        "id": "PO-L02",
+        "line_number": 2,
+        "sku": "FAST-NUT-02",
+        "description": "Hardened Grade 8 Lock Nut 3/8-16",
+        "quantity": 500,
+        "uom": "EA",
+        "unit_price": 2.1,
+        "total_price": 1050,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 162,
+          "width": 515,
+          "height": 20
+        }
+      },
+      {
+        "id": "PO-L03",
+        "line_number": 3,
+        "sku": "WASH-FLAT-03",
+        "description": "Zinc Plated Flat Washer 3/8 Inch",
+        "quantity": 1000,
+        "uom": "EA",
+        "unit_price": 1.7,
+        "total_price": 1700,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 182,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_01_clean_match\\PO_2026_9011.pdf"
+  },
+  "goods_receipts": [
+    {
+      "header": {
+        "document_id": "GRN-2026-4401",
+        "document_type": "GRN",
+        "reference_id": "PO-2026-9011",
+        "vendor_id": "VEND-APEX",
+        "vendor_name": "Apex Industrial Fasteners Corp",
+        "vendor_tax_id": "",
+        "issue_date": "2026-09-05",
+        "currency": "USD",
+        "subtotal": 0,
+        "tax_total": 0,
+        "freight_total": 0,
+        "total_amount": 0,
+        "payment_terms": ""
+      },
+      "lines": [
+        {
+          "id": "GRN-L01",
+          "line_number": 1,
+          "sku": "FAST-HEX-01",
+          "description": "Grade 8 Hex Flange Bolt 3/8-16",
+          "quantity": 500,
+          "uom": "EA",
+          "unit_price": 0,
+          "total_price": 0,
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "bounding_box": {
+            "page": 1,
+            "x": 40,
+            "y": 142,
+            "width": 515,
+            "height": 20
+          }
+        },
+        {
+          "id": "GRN-L02",
+          "line_number": 2,
+          "sku": "FAST-NUT-02",
+          "description": "Hardened Grade 8 Lock Nut 3/8-16",
+          "quantity": 500,
+          "uom": "EA",
+          "unit_price": 0,
+          "total_price": 0,
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "bounding_box": {
+            "page": 1,
+            "x": 40,
+            "y": 162,
+            "width": 515,
+            "height": 20
+          }
+        },
+        {
+          "id": "GRN-L03",
+          "line_number": 3,
+          "sku": "WASH-FLAT-03",
+          "description": "Zinc Plated Flat Washer 3/8 Inch",
+          "quantity": 1000,
+          "uom": "EA",
+          "unit_price": 0,
+          "total_price": 0,
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "bounding_box": {
+            "page": 1,
+            "x": 40,
+            "y": 182,
+            "width": 515,
+            "height": 20
+          }
+        }
+      ],
+      "raw_pdf_path": "examples\\dossiers\\dossier_01_clean_match\\GRN_2026_4401.pdf"
+    }
+  ],
+  "invoice": {
+    "header": {
+      "document_id": "INV-APEX-8812",
+      "document_type": "INVOICE",
+      "reference_id": "PO-2026-9011",
+      "vendor_id": "VEND-APEX",
+      "vendor_name": "Apex Industrial Fasteners Corp",
+      "vendor_tax_id": "US-82-9912041",
+      "issue_date": "2026-09-08",
+      "currency": "USD",
+      "subtotal": 4850,
+      "tax_total": 388,
+      "freight_total": 0,
+      "total_amount": 5238,
+      "payment_terms": "2/10 Net 30"
+    },
+    "lines": [
+      {
+        "id": "INV-L01",
+        "line_number": 1,
+        "sku": "FAST-HEX-01",
+        "description": "Hex Flange Bolt 3/8-16 Grade 8",
+        "quantity": 500,
+        "uom": "EA",
+        "unit_price": 4.2,
+        "total_price": 2100,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      },
+      {
+        "id": "INV-L02",
+        "line_number": 2,
+        "sku": "FAST-NUT-02",
+        "description": "Lock Nut 3/8-16 Grade 8",
+        "quantity": 500,
+        "uom": "EA",
+        "unit_price": 2.1,
+        "total_price": 1050,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 162,
+          "width": 515,
+          "height": 20
+        }
+      },
+      {
+        "id": "INV-L03",
+        "line_number": 3,
+        "sku": "WASH-FLAT-03",
+        "description": "Flat Washer 3/8 Inch Zinc",
+        "quantity": 1000,
+        "uom": "EA",
+        "unit_price": 1.7,
+        "total_price": 1700,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 182,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_01_clean_match\\INV_APEX_8812.pdf"
+  }
+}

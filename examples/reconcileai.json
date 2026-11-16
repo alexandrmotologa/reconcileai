@@ -1,0 +1,22 @@
+{
+  "tolerance": {
+    "max_price_variance_percent": 0.5,
+    "max_price_variance_absolute": 0.05,
+    "max_quantity_variance": 0.0,
+    "max_tax_variance_absolute": 0.02
+  },
+  "matching": {
+    "min_description_similarity": 0.60,
+    "enable_uom_conversion": true,
+    "allow_fuzzy_sku_fallback": true
+  },
+  "erp": {
+    "default_target": "SAP_IDOC",
+    "auto_approve_zero_variance": true,
+    "export_directory": "./exports"
+  },
+  "server": {
+    "host": "127.0.0.1",
+    "port": 7272
+  }
+}

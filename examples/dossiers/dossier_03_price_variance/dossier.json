@@ -1,0 +1,123 @@
+{
+  "id": "dossier_03_price_variance",
+  "title": "Polymer Tech - Unit Price Creep ($1,250 Overcharge)",
+  "purchase_order": {
+    "header": {
+      "document_id": "PO-2026-9033",
+      "document_type": "PO",
+      "reference_id": "",
+      "vendor_id": "VEND-POLY",
+      "vendor_name": "Polymer Tech Materials Inc",
+      "vendor_tax_id": "",
+      "issue_date": "2026-09-03",
+      "currency": "USD",
+      "subtotal": 6000,
+      "tax_total": 480,
+      "freight_total": 0,
+      "total_amount": 6480,
+      "payment_terms": "Net 30"
+    },
+    "lines": [
+      {
+        "id": "PO-L01",
+        "line_number": 1,
+        "sku": "POLY-RESIN-01",
+        "description": "Industrial Thermoplastic Resin Pellet A-Grade",
+        "quantity": 500,
+        "uom": "KG",
+        "unit_price": 12,
+        "total_price": 6000,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_03_price_variance\\PO_2026_9033.pdf"
+  },
+  "goods_receipts": [
+    {
+      "header": {
+        "document_id": "GRN-2026-4433",
+        "document_type": "GRN",
+        "reference_id": "PO-2026-9033",
+        "vendor_id": "VEND-POLY",
+        "vendor_name": "Polymer Tech Materials Inc",
+        "vendor_tax_id": "",
+        "issue_date": "2026-09-07",
+        "currency": "USD",
+        "subtotal": 0,
+        "tax_total": 0,
+        "freight_total": 0,
+        "total_amount": 0,
+        "payment_terms": ""
+      },
+      "lines": [
+        {
+          "id": "GRN-L01",
+          "line_number": 1,
+          "sku": "POLY-RESIN-01",
+          "description": "Thermoplastic Resin Pellet A-Grade",
+          "quantity": 500,
+          "uom": "KG",
+          "unit_price": 0,
+          "total_price": 0,
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "bounding_box": {
+            "page": 1,
+            "x": 40,
+            "y": 142,
+            "width": 515,
+            "height": 20
+          }
+        }
+      ],
+      "raw_pdf_path": "examples\\dossiers\\dossier_03_price_variance\\GRN_2026_4433.pdf"
+    }
+  ],
+  "invoice": {
+    "header": {
+      "document_id": "INV-POLY-1044",
+      "document_type": "INVOICE",
+      "reference_id": "PO-2026-9033",
+      "vendor_id": "VEND-POLY",
+      "vendor_name": "Polymer Tech Materials Inc",
+      "vendor_tax_id": "",
+      "issue_date": "2026-09-09",
+      "currency": "USD",
+      "subtotal": 7250,
+      "tax_total": 580,
+      "freight_total": 0,
+      "total_amount": 7830,
+      "payment_terms": "Net 30"
+    },
+    "lines": [
+      {
+        "id": "INV-L01",
+        "line_number": 1,
+        "sku": "POLY-RESIN-01",
+        "description": "Resin Pellets Thermoplastic Grade-A",
+        "quantity": 500,
+        "uom": "KG",
+        "unit_price": 14.5,
+        "total_price": 7250,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_03_price_variance\\INV_POLY_1044.pdf"
+  }
+}

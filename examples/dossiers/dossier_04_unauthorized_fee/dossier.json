@@ -1,0 +1,123 @@
+{
+  "id": "dossier_04_unauthorized_fee",
+  "title": "Delta Precision - Unauthorized Freight Surcharge ($450 Overcharge)",
+  "purchase_order": {
+    "header": {
+      "document_id": "PO-2026-9044",
+      "document_type": "PO",
+      "reference_id": "",
+      "vendor_id": "VEND-DELTA",
+      "vendor_name": "Delta Precision Instruments Corp",
+      "vendor_tax_id": "",
+      "issue_date": "2026-09-04",
+      "currency": "USD",
+      "subtotal": 8400,
+      "tax_total": 672,
+      "freight_total": 0,
+      "total_amount": 9072,
+      "payment_terms": "Net 30 FOB Destination Freight Prepaid"
+    },
+    "lines": [
+      {
+        "id": "PO-L01",
+        "line_number": 1,
+        "sku": "SENS-OPT-08",
+        "description": "Laser Optical Displacement Sensor 0-50mm",
+        "quantity": 20,
+        "uom": "EA",
+        "unit_price": 420,
+        "total_price": 8400,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_04_unauthorized_fee\\PO_2026_9044.pdf"
+  },
+  "goods_receipts": [
+    {
+      "header": {
+        "document_id": "GRN-2026-4444",
+        "document_type": "GRN",
+        "reference_id": "PO-2026-9044",
+        "vendor_id": "VEND-DELTA",
+        "vendor_name": "Delta Precision Instruments Corp",
+        "vendor_tax_id": "",
+        "issue_date": "2026-09-08",
+        "currency": "USD",
+        "subtotal": 0,
+        "tax_total": 0,
+        "freight_total": 0,
+        "total_amount": 0,
+        "payment_terms": ""
+      },
+      "lines": [
+        {
+          "id": "GRN-L01",
+          "line_number": 1,
+          "sku": "SENS-OPT-08",
+          "description": "Optical Displacement Sensor 0-50mm",
+          "quantity": 20,
+          "uom": "EA",
+          "unit_price": 0,
+          "total_price": 0,
+          "tax_rate": 0,
+          "tax_amount": 0,
+          "bounding_box": {
+            "page": 1,
+            "x": 40,
+            "y": 142,
+            "width": 515,
+            "height": 20
+          }
+        }
+      ],
+      "raw_pdf_path": "examples\\dossiers\\dossier_04_unauthorized_fee\\GRN_2026_4444.pdf"
+    }
+  ],
+  "invoice": {
+    "header": {
+      "document_id": "INV-DELTA-7731",
+      "document_type": "INVOICE",
+      "reference_id": "PO-2026-9044",
+      "vendor_id": "VEND-DELTA",
+      "vendor_name": "Delta Precision Instruments Corp",
+      "vendor_tax_id": "",
+      "issue_date": "2026-09-10",
+      "currency": "USD",
+      "subtotal": 8400,
+      "tax_total": 672,
+      "freight_total": 450,
+      "total_amount": 9522,
+      "payment_terms": "Net 30"
+    },
+    "lines": [
+      {
+        "id": "INV-L01",
+        "line_number": 1,
+        "sku": "SENS-OPT-08",
+        "description": "Optical Displacement Sensor 0-50mm",
+        "quantity": 20,
+        "uom": "EA",
+        "unit_price": 420,
+        "total_price": 8400,
+        "tax_rate": 0,
+        "tax_amount": 0,
+        "bounding_box": {
+          "page": 1,
+          "x": 40,
+          "y": 142,
+          "width": 515,
+          "height": 20
+        }
+      }
+    ],
+    "raw_pdf_path": "examples\\dossiers\\dossier_04_unauthorized_fee\\INV_DELTA_7731.pdf"
+  }
+}
