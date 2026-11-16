@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background Gradient for Squircle -->
+    <linearGradient id="squircleBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f8fafc"/>
+    </linearGradient>
+
+    <!-- Bevel Border Gradient -->
+    <linearGradient id="bevelBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="50%" stop-color="#94a3b8"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </linearGradient>
+
+    <!-- Facet Gradients with High Contrast Volumetric Shading -->
+    <linearGradient id="facetHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#475569"/>
+    </linearGradient>
+
+    <linearGradient id="facetMid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+
+    <linearGradient id="facetDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+
+    <linearGradient id="facetObsidian" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+
+    <!-- Amber Gold Predator Iris -->
+    <linearGradient id="amberIris" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="60%" stop-color="#d97706"/>
+      <stop offset="100%" stop-color="#92400e"/>
+    </linearGradient>
+
+    <!-- Electric Cyan Precision Sensor -->
+    <linearGradient id="cyanOptic" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="60%" stop-color="#00f5ff"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 1. Luxury White Squircle Container -->
+  <rect x="32" y="32" width="960" height="960" rx="220" fill="url(#squircleBg)" stroke="url(#bevelBorder)" stroke-width="8"/>
+  <rect x="44" y="44" width="936" height="936" rx="208" fill="none" stroke="#f1f5f9" stroke-width="2"/>
+
+  <!-- Subtle Verification Crosshairs & Coordinate Concentrics -->
+  <circle cx="512" cy="512" r="384" fill="none" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="8 8"/>
+  <line x1="512" y1="80" x2="512" y2="120" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="512" y1="904" x2="512" y2="944" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="80" y1="512" x2="120" y2="512" stroke="#94a3b8" stroke-width="3"/>
+  <line x1="904" y1="512" x2="944" y2="512" stroke="#94a3b8" stroke-width="3"/>
+
+  <!-- 2. Massive Hexagonal Gateway Frame -->
+  <polygon points="512,120 840,300 840,724 512,904 184,724 184,300" 
+           fill="none" stroke="#0f172a" stroke-width="32" stroke-linejoin="round"/>
+  <polygon points="512,148 812,314 812,710 512,876 212,710 212,314" 
+           fill="none" stroke="#00f5ff" stroke-width="3" stroke-dasharray="12 8" opacity="0.45"/>
+
+  <!-- 3. The 85% Mass Mascot: The Vigilant Owl (Bubo Vigilans) -->
+  <!-- Watertight Silhouette Base (Dark Obsidian Shield) -->
+  <path d="M 512,190 
+           L 440,195 L 340,140 L 355,270 L 290,340 L 260,450 L 270,580 L 315,690 L 390,780 L 460,845 L 512,865 
+           L 564,845 L 634,780 L 709,690 L 754,580 L 764,450 L 734,340 L 669,270 L 684,140 L 584,195 Z" 
+        fill="#020617"/>
+
+  <!-- Ear Tufts (Tall, Alert, Architectural Horns) -->
+  <!-- Left Horn -->
+  <polygon points="512,240 440,195 340,140 375,250" fill="url(#facetDark)"/>
+  <polygon points="340,140 355,270 375,250" fill="url(#facetMid)"/>
+  <polygon points="512,240 375,250 435,310" fill="url(#facetHighlight)"/>
+
+  <!-- Right Horn -->
+  <polygon points="512,240 584,195 684,140 649,250" fill="url(#facetDark)"/>
+  <polygon points="684,140 669,270 649,250" fill="url(#facetMid)"/>
+  <polygon points="512,240 649,250 589,310" fill="url(#facetHighlight)"/>
+
+  <!-- Forehead Keel & Crown Facets -->
+  <polygon points="512,240 435,310 512,350" fill="url(#facetMid)"/>
+  <polygon points="512,240 589,310 512,350" fill="url(#facetHighlight)"/>
+
+  <!-- Aggressive Supraorbital Brow Ridge (Slanted V-Shape Predator Gaze) -->
+  <polygon points="435,310 355,270 290,340 370,360" fill="url(#facetDark)"/>
+  <polygon points="589,310 669,270 734,340 654,360" fill="url(#facetMid)"/>
+
+  <polygon points="435,310 512,350 450,380 370,360" fill="url(#facetHighlight)"/>
+  <polygon points="589,310 512,350 450,380 512,410" fill="url(#facetMid)"/>
+  <polygon points="589,310 512,350 574,380 654,360" fill="url(#facetDark)"/>
+  <polygon points="512,350 574,380 512,410" fill="url(#facetHighlight)"/>
+
+  <!-- Lateral Facial Disc Wings (Flared Cheek Ruffs) -->
+  <polygon points="290,340 370,360 320,440 260,450" fill="url(#facetDark)"/>
+  <polygon points="734,340 654,360 704,440 764,450" fill="url(#facetHighlight)"/>
+
+  <polygon points="370,360 450,380 380,470 320,440" fill="url(#facetMid)"/>
+  <polygon points="654,360 574,380 644,470 704,440" fill="url(#facetDark)"/>
+
+  <!-- Deep Recessed Orbital Sockets -->
+  <!-- Left Socket -->
+  <polygon points="450,380 512,410 495,490 420,490 380,470" fill="#090d16"/>
+  <!-- Right Socket -->
+  <polygon points="574,380 512,410 529,490 604,490 644,470" fill="#090d16"/>
+
+  <!-- THE PREDATORY AUDIT EYES (Sharp Angled Eyes Slanted Upward & Outward) -->
+  <!-- Left Eye Amber Iris Facet -->
+  <polygon points="410,430 475,415 485,460 440,475 405,455" fill="url(#amberIris)"/>
+  <!-- Left Eye Cyan Sensor Pupil (Faceted Diamond) -->
+  <polygon points="435,432 465,422 470,448 440,458" fill="url(#cyanOptic)"/>
+  <polygon points="445,435 455,430 458,442 448,447" fill="#ffffff"/>
+
+  <!-- Right Eye Amber Iris Facet -->
+  <polygon points="614,430 549,415 539,460 584,475 619,455" fill="url(#amberIris)"/>
+  <!-- Right Eye Cyan Sensor Pupil (Faceted Diamond) -->
+  <polygon points="589,432 559,422 554,448 584,458" fill="url(#cyanOptic)"/>
+  <polygon points="579,435 569,430 566,442 576,447" fill="#ffffff"/>
+
+  <!-- Nasal Bridge & Hooked Beak (3-Way Verification Talons) -->
+  <!-- Upper Bridge -->
+  <polygon points="512,410 495,490 512,505" fill="url(#facetHighlight)"/>
+  <polygon points="512,410 529,490 512,505" fill="url(#facetDark)"/>
+
+  <!-- Hooked Beak Facets -->
+  <polygon points="512,505 495,490 488,590 512,640" fill="url(#facetMid)"/>
+  <polygon points="512,505 529,490 536,590 512,640" fill="url(#facetObsidian)"/>
+  <!-- Cyan Beak Apex (The Auditing Needle Point) -->
+  <polygon points="498,590 526,590 512,640" fill="#00f5ff"/>
+
+  <!-- Lower Facial Disc & Throat Armor Plating -->
+  <!-- Left Lower Ruffs -->
+  <polygon points="420,490 495,490 488,590 440,580" fill="url(#facetDark)"/>
+  <polygon points="380,470 420,490 440,580 360,590" fill="url(#facetMid)"/>
+  <polygon points="320,440 380,470 360,590 270,580" fill="url(#facetDark)"/>
+
+  <!-- Right Lower Ruffs -->
+  <polygon points="604,490 529,490 536,590 584,580" fill="url(#facetHighlight)"/>
+  <polygon points="644,470 604,490 584,580 664,590" fill="url(#facetMid)"/>
+  <polygon points="704,440 644,470 664,590 754,580" fill="url(#facetHighlight)"/>
+
+  <!-- Breastplate: Tripartite 3-Way Matching Armor (PO, GRN, INV) -->
+  <!-- Upper Apex (Purchase Order Tier) -->
+  <polygon points="512,640 440,580 460,680 512,715" fill="url(#facetMid)"/>
+  <polygon points="512,640 584,580 564,680 512,715" fill="url(#facetHighlight)"/>
+
+  <!-- Mid Flanks (Goods Receipt Intake Tier) -->
+  <polygon points="440,580 360,590 395,700 460,680" fill="url(#facetDark)"/>
+  <polygon points="584,580 664,590 629,700 564,680" fill="url(#facetMid)"/>
+
+  <polygon points="360,590 270,580 315,690 395,700" fill="url(#facetObsidian)"/>
+  <polygon points="664,590 754,580 709,690 629,700" fill="url(#facetDark)"/>
+
+  <!-- Lower Chevron (Supplier Invoice Settlement Tier) -->
+  <polygon points="512,715 460,680 475,785 512,815" fill="url(#facetHighlight)"/>
+  <polygon points="512,715 564,680 549,785 512,815" fill="url(#facetDark)"/>
+
+  <polygon points="460,680 395,700 415,795 475,785" fill="url(#facetDark)"/>
+  <polygon points="564,680 629,700 609,795 549,785" fill="url(#facetMid)"/>
+
+  <polygon points="395,700 315,690 350,775 415,795" fill="url(#facetObsidian)"/>
+  <polygon points="629,700 709,690 674,775 609,795" fill="url(#facetDark)"/>
+
+  <!-- Base Anchor & Keel (Mathematical Equilibrium) -->
+  <polygon points="512,815 475,785 490,855 512,865" fill="url(#facetMid)"/>
+  <polygon points="512,815 549,785 534,855 512,865" fill="url(#facetDark)"/>
+
+  <polygon points="475,785 415,795 450,850 490,855" fill="url(#facetObsidian)"/>
+  <polygon points="549,785 609,795 574,850 534,855" fill="url(#facetMid)"/>
+
+  <!-- Tripartite Audit Core Emitting Cyan Ray Accents -->
+  <polygon points="512,680 498,705 526,705" fill="#00f5ff" opacity="0.95"/>
+  <circle cx="512" cy="697" r="2.5" fill="#ffffff"/>
+</svg>

@@ -22,7 +22,9 @@ export const DiscrepancyList: React.FC<DiscrepancyListProps> = ({
     setTimeout(() => setCopiedID(null), 2000);
   };
 
-  if (discrepancies.length === 0) {
+  const list = discrepancies || [];
+
+  if (list.length === 0) {
     return (
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 text-center text-slate-400">
         <div className="inline-flex h-12 w-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 items-center justify-center mb-3">
@@ -40,13 +42,13 @@ export const DiscrepancyList: React.FC<DiscrepancyListProps> = ({
     <div className="space-y-3">
       <div className="flex items-center justify-between px-1">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-          Detected Discrepancies ({discrepancies.length})
+          Detected Discrepancies ({list.length})
         </h3>
         <span className="text-[11px] text-rose-400 font-medium">Requires Resolution</span>
       </div>
 
       <div className="space-y-2.5">
-        {discrepancies.map((d) => {
+        {list.map((d) => {
           const isSelected = selectedSKU === d.item_sku;
 
           return (

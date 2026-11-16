@@ -1,6 +1,16 @@
-# reconcileai
-
-Autonomous 3-way document matching and discrepancy auditor for enterprise accounts payable. Single-binary Go engine with embedded React 19 cockpit, visual PDF bounding box annotation, and ERP settlement export.
+<p align="center">
+  <img src="docs/images/reconcileai_logo.svg" alt="reconcileai logo" width="160" height="160" />
+</p>
+<h1 align="center">reconcileai</h1>
+<p align="center">
+  <strong>Autonomous 3-Way Document Matching and Discrepancy Auditor for Enterprise Accounts Payable</strong>
+</p>
+<p align="center">
+  <a href="https://github.com/alexandrmotologa/reconcileai/actions"><img src="https://img.shields.io/badge/build-passing-brightgreen.svg" alt="Build Status" /></a>
+  <a href="https://golang.org"><img src="https://img.shields.io/badge/Go-1.22+-00ADD8.svg" alt="Go Version" /></a>
+  <a href="https://react.dev"><img src="https://img.shields.io/badge/React-19-61DAFB.svg" alt="React 19" /></a>
+  <a href="https://github.com/alexandrmotologa/reconcileai/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
+</p>
 
 ## Overview
 
@@ -11,6 +21,32 @@ reconcileai automates 3-way matching across purchase orders, warehouse goods rec
 3. **Supplier invoice (INV)**: Vendor payment demand with applied unit prices, taxes, and shipping fees.
 
 The system ingests PDF documents and structured JSON dossiers, aligns line items using token overlap and string distance metrics, applies strict mathematical audits, overlays red bounding boxes on invoice pages where discrepancies exist, and exports settlement files for SAP, NetSuite, or QuickBooks.
+
+## Interactive cockpit and demo
+
+reconcileai includes a single-binary web cockpit built with React 19 and Tailwind CSS. The interface displays synchronized tripartite line item diffs, live audit status, early payment discount opportunities, and visual PDF document overlays with coordinate-accurate red discrepancy bounding boxes.
+
+![reconcileai Animated Cockpit Walkthrough](docs/images/reconcileai_demo.gif)
+
+### Authentic cockpit views
+
+#### 1. Approved three-way reconciliation (Clean match)
+![Approved Three-Way Reconciliation](docs/images/cockpit_clean_match.png)
+*Synchronized comparison of PO, GRN, and Invoice with verified quantities, zero price variance, and detected 2/10 Net 30 early payment discount opportunity.*
+
+#### 2. Discrepancy audit and visual bounding box overlay
+![Discrepancy Audit and Visual Bounding Box Overlay](docs/images/cockpit_discrepancy.png)
+*Quantity overbilling detected on Logix Hydraulic invoice. The audit engine flags the 20-unit variance, computes the $2,700 overcharge prevented, and projects red highlight bounding boxes onto the invoice document.*
+
+#### 3. Supplier compliance and risk scorecard
+![Supplier Compliance and Risk Scorecard](docs/images/cockpit_scorecard.png)
+*Aggregated historical accuracy, dispute counts, overcharges prevented, and vendor risk tiers computed across all processed dossiers.*
+
+#### 4. Responsive mobile cockpit view
+<p align="center">
+  <img src="docs/images/cockpit_mobile.png" alt="reconcileai Mobile Responsive Cockpit View" width="390" />
+</p>
+*Fully adaptive layout across mobile, tablet, and widescreen enterprise monitors.*
 
 ## Key capabilities
 

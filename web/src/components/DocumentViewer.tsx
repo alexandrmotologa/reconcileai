@@ -94,10 +94,10 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       </div>
 
       {/* Visual Document Canvas Paper Layout */}
-      <div className="flex-1 p-6 overflow-y-auto bg-slate-950/60 relative">
-        <div className="max-w-2xl mx-auto bg-white text-slate-900 rounded-lg shadow-2xl p-8 relative border border-slate-300 font-sans text-xs">
+      <div className="flex-1 p-3 sm:p-6 overflow-y-auto bg-slate-950/60 relative">
+        <div className="max-w-2xl mx-auto bg-white text-slate-900 rounded-lg shadow-2xl p-4 sm:p-8 relative border border-slate-300 font-sans text-xs">
           {/* Document Header */}
-          <div className="flex justify-between items-start border-b border-slate-200 pb-4 mb-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start border-b border-slate-200 pb-4 mb-4 gap-2">
             <div>
               <h3 className="text-lg font-bold text-slate-900 tracking-tight">
                 {activeDoc.header.document_type}
@@ -109,7 +109,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
                 </p>
               )}
             </div>
-            <div className="text-right">
+            <div className="sm:text-right">
               <div className="font-bold text-slate-800">{activeDoc.header.vendor_name}</div>
               <div className="text-slate-500 text-[11px]">Date: {activeDoc.header.issue_date}</div>
               {activeDoc.header.payment_terms && (
@@ -119,10 +119,11 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
           </div>
 
           {/* Line Items Table */}
-          <table className="w-full text-left border-collapse my-4">
-            <thead>
-              <tr className="border-b-2 border-slate-300 text-slate-600 font-semibold text-[11px]">
-                <th className="py-1.5 px-2">SKU</th>
+          <div className="overflow-x-auto my-4">
+            <table className="w-full text-left border-collapse min-w-[360px]">
+              <thead>
+                <tr className="border-b-2 border-slate-300 text-slate-600 font-semibold text-[11px]">
+                  <th className="py-1.5 px-2">SKU</th>
                 <th className="py-1.5 px-2">Description</th>
                 <th className="py-1.5 px-2 text-right">Qty</th>
                 <th className="py-1.5 px-2 text-center">UOM</th>
@@ -136,7 +137,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
             </thead>
             <tbody>
               {activeDoc.lines.map((l, idx) => {
-                const lineDisc = discrepancies.find(
+                const lineDisc = (discrepancies || []).find(
                   (d) => d.item_sku === l.sku && activeTab === 'INVOICE'
                 );
                 const isSelected = selectedSKU === l.sku;
@@ -179,6 +180,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
               })}
             </tbody>
           </table>
+          </div>
 
           {/* Surcharges & Grand Totals */}
           {activeTab !== 'GRN' && (

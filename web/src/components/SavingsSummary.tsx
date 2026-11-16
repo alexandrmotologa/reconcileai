@@ -111,7 +111,7 @@ export const SavingsSummary: React.FC<SavingsSummaryProps> = ({ summary }) => {
             Discrepancies Found
           </span>
           <div className="text-xl font-bold text-amber-400 mt-1">
-            {summary.discrepancies.length} {summary.discrepancies.length === 1 ? 'item' : 'items'}
+            {(summary.discrepancies || []).length} {(summary.discrepancies || []).length === 1 ? 'item' : 'items'}
           </div>
         </div>
       </div>

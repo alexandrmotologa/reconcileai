@@ -20,7 +20,7 @@ func ReconcileDossier(dossier *config.Dossier, cfg config.AppConfig) *config.Aud
 func ReconcileDossierWithLedger(dossier *config.Dossier, cfg config.AppConfig, ledger *DuplicateLedger) *config.AuditSummary {
 	startTime := time.Now()
 
-	var discrepancies []config.Discrepancy
+	discrepancies := make([]config.Discrepancy, 0)
 
 	// 0. Duplicate invoice detection
 	if ledger != nil {
